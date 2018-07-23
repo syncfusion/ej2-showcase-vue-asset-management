@@ -1,0 +1,10 @@
+{
+    "htmllint": ["./src/**/*.html"],
+    "json": ["./**/*.json"],
+    "dedupe": ["./src/**/*.js"],
+    "watchSample": ["./src/**/*.js"],
+    "jshint": ["./src/**/*.js", "!./src/**/*.min.js"],
+    "github": ["./src/**/*.{html,ts,json}", "./styles{,/**}", "./src/**/images{,/**}", "./src/common/lib{,/**}", "./src/common/cldr-data{,/**}", "./src/showcase{,/**}", "!./src/showcase/**/!(webpack.config)*.{js,json}", "!./styles/**/!(index)*.css", "./spec/**/*.ts", "./*.html", "./favicon.ico", "karma.conf.js", "package.json", "test-main.js", "tsconfig.json", "webpack.config.js", "!./googlec03dd4bc003151bc.html", "license"],
+    "isShowCase":true,
+    "publishSamples": ["./dist/**/*"]
+}
