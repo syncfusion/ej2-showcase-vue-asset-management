@@ -1,4 +1,4 @@
-# ej2-showcase-vue-assert-management
+# Asset Management System single page application built using Syncfusion Essential JS 2 Vue UI components
 Showcase application for tracking and visualizing software and hardware assets of an organization.
 ## Build Setup
 
