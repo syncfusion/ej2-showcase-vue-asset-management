@@ -1,5 +1,7 @@
 <template>
   <div id="app" v-on:click="closeMenus">
+    <link href="https://cdn.syncfusion.com/ej2/fabric.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <div class="control-section">
     <div id="wrapper">
         <title>IT Asset Management</title>
@@ -529,9 +531,6 @@ export default Vue.extend({
             backColor: Browser.isDevice ? 'linear-gradient(-138deg, #3D8EC4 0%, #276AAB 100%)' : '#fff',
             bellColor: Browser.isDevice ? '#fff' : '#999999'
         }
-    },
-    mounted: function () {
-        window.dispatchEvent(new Event('resize'))
     },
     methods: {
         onComplete: function (args) {
