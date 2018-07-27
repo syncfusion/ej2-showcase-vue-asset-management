@@ -1,7 +1,5 @@
 <template>
   <div id="app" v-on:click="closeMenus">
-    <link href="https://cdn.syncfusion.com/ej2/fabric.css" rel="stylesheet" />
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <div class="control-section">
     <div id="wrapper">
         <title>IT Asset Management</title>
@@ -74,13 +72,14 @@ html {
     font-size: 20px;
     padding: 10px 10px;
     /* position: relative; */
-    overflow: auto;
     height: 100%;
     min-height: 100%;
     min-height: fill-available;
     min-height: -webkit-fill-available;
     min-height: -moz-available;
     background: linear-gradient(#F9FBFC, #E3E7F0);
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .top-row {
     padding-top: 10px;
@@ -531,6 +530,9 @@ export default Vue.extend({
             backColor: Browser.isDevice ? 'linear-gradient(-138deg, #3D8EC4 0%, #276AAB 100%)' : '#fff',
             bellColor: Browser.isDevice ? '#fff' : '#999999'
         }
+    },
+    mounted: function () {
+        window.dispatchEvent(new Event('resize'))
     },
     methods: {
         onComplete: function (args) {
