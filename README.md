@@ -1,16 +1,15 @@
-# Asset Management System single page application built using Syncfusion Essential JS 2 Vue UI components
+# Asset Management System - Single page application built using Syncfusion Essential JS 2 Vue UI components
 Showcase application for tracking and visualizing software and hardware assets of an organization. This application built using Syncfusion Essential JS 2 [Vue UI components](https://www.syncfusion.com/products/vue).
 
 ## Build Setup
 
-
-# Install dependencies
+### Install dependencies
    npm install
 
-# Serve with hot reload at localhost:8080
+### Serve with hot reload at localhost:8080
    npm run dev
 
-# Build for production with minification
+### Build for production with minification
    npm run build
 
 ## Demo
