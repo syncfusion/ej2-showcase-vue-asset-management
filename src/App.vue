@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-on:click="closeMenus">
+  <div id="app" v-on:click="closeMenus" :style="{ marginLeft: marginSize }">
 <div class="control-section">
     <div id="wrapper">
         <title>IT Asset Management</title>
@@ -61,6 +61,7 @@ html {
   color: #2c3e50;
   height: calc(100% - 60px);
   background: linear-gradient(#F9FBFC, #E3E7F0);
+  margin-left: 170px;
 }
    /* main content area styles */
 .main-container {
@@ -178,6 +179,12 @@ h3 {
         display: none;
     }
 }
+@media screen and (max-width: 1024px) {
+    #app {
+        margin-left: 0px;
+    }
+}
+
 @media screen and (max-width: 450px) {
     .overview-range-picker {
         padding-top: 10px;
@@ -527,12 +534,10 @@ export default Vue.extend({
             showBackdrop: false,
             sidebarTarget: Browser.isDevice ? '.content' : document.body,
             sidebarPosition: Browser.isDevice ? 'absolute' : 'fixed',
+            marginSize: Browser.isDevice ? '0px' : '170px',
             backColor: Browser.isDevice ? 'linear-gradient(-138deg, #3D8EC4 0%, #276AAB 100%)' : '#fff',
             bellColor: Browser.isDevice ? '#fff' : '#999999'
         }
-    },
-    mounted: function () {
-        window.dispatchEvent(new Event('resize'))
     },
     methods: {
         onComplete: function (args) {
