@@ -19,17 +19,17 @@
     <ejs-grid class="r-space" ref="gridObj" :dataSource='gridData' :load="onGridLoad" :actionBegin='onActionBegin' :toolbarClick="editToolClicked" :toolbar="toolbar" :actionComplete='onload' :allowSorting='true' :allowSelection='true' :selectionSettings='selectionSettings' :allowFiltering='true' :allowPaging='true' :allowGrouping='false' :pageSettings='pageSettings' :editSettings='editSettings' :filterSettings='filterSettings'>
         <e-columns>
             <e-column field='TaskID' headerText='Task ID' textAlign='Right' width=90 :isPrimaryKey='true'></e-column>
-            <e-column field='Name' headerText='Software Name' :filter='filter' width=120></e-column>
-            <e-column field='Edition' headerText='Edition' width=90></e-column>
-            <e-column field='Version' headerText='Version' width=70></e-column>
-            <e-column field='Vendor' headerText='Vendor' width=100></e-column>
-            <e-column field='LicenseType' headerText='Type' :filter='filter' width=70></e-column>
+            <e-column field='Name' headerText='Software Name' :filter='filter' clipMode='EllipsisWithTooltip' width=120></e-column>
+            <e-column field='Edition' headerText='Edition' width=80></e-column>
+            <e-column field='Version' headerText='Version' clipMode='EllipsisWithTooltip' width=100></e-column>
+            <e-column field='Vendor' headerText='Vendor' clipMode='EllipsisWithTooltip' width=100></e-column>
+            <e-column field='LicenseType' headerText='Type' :filter='filter' clipMode='EllipsisWithTooltip' width=70></e-column>
             <e-column field='LicenseCount' headerText='Licenses' textAlign='Right' editType='numericedit' format='N' width=90></e-column>
-            <e-column field='DOP' headerText='Purchase Date' textAlign='Right' type='date' editType='datepickeredit' format='yMd' width=110></e-column>
+            <e-column field='DOP' headerText='Purchase Date' textAlign='Right' type='date' editType='datepickeredit' format='yMd' width=130></e-column>
             <e-column field='ExpiredOn' headerText='Expiry' textAlign='Right' type='date' editType='datepickeredit' format='yMd' width=90></e-column>
-            <e-column field='Category' headerText='Category' :filter='filter' width=90></e-column>
+            <e-column field='Category' headerText='Category' :filter='filter' clipMode='EllipsisWithTooltip' width=90></e-column>
             <e-column field='Note' headerText='Notes' :visible='false'></e-column>
-            <e-column headerText='' width='70' :commands='commands'></e-column>
+            <e-column headerText='' width='100' :commands='commands'></e-column>
         </e-columns>
     </ejs-grid>
     </div>

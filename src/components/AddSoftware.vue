@@ -184,8 +184,8 @@ export default Vue.extend({
             'Vendor': document.getElementById('vendor').value,
             'LicenseType': document.getElementById('license-type').value,
             'LicenseCount': document.getElementById('license-count').value,
-            'DOP': document.getElementById('dop').value,
-            'ExpiredOn': document.getElementById('expired-on').value,
+            'DOP': new Date(document.getElementById('dop').value),
+            'ExpiredOn': new Date(document.getElementById('expired-on').value),
             'Category': document.getElementById('category').value,
             'Note': document.getElementById('note').value
             })
@@ -214,8 +214,8 @@ export default Vue.extend({
             'Vendor': document.getElementById('vendor').value,
             'LicenseType': document.getElementById('license-type').value,
             'LicenseCount': document.getElementById('license-count').value,
-            'DOP': document.getElementById('dop').value,
-            'ExpiredOn': document.getElementById('expired-on').value,
+            'DOP': new Date(document.getElementById('dop').value),
+            'ExpiredOn': new Date(document.getElementById('expired-on').value),
             'Category': document.getElementById('category').value,
             'Note': document.getElementById('note').value
               }

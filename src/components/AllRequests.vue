@@ -19,9 +19,9 @@
     <ejs-grid class="r-space" ref="gridObj" :rowDataBound="setStyle" :load="onGridLoad" :actionBegin='onActionBegin' :toolbarClick="editToolClicked" :toolbar="toolbar" :actionComplete='onload' :dataSource='gridData' :allowSorting='true' :allowSelection='true' :selectionSettings='selectionSettings' :allowFiltering='true' :allowPaging='true' :allowGrouping='false' :pageSettings='pageSettings' :editSettings='editSettings' :filterSettings='filterSettings'>
         <e-columns>
             <e-column field='TaskID' headerText='Task ID' textAlign='Right' width=60 :isPrimaryKey='true'></e-column>
-            <e-column field='Employee' headerText='Employee' width=120></e-column>
+            <e-column field='Employee' headerText='Employee' clipMode='EllipsisWithTooltip' width=120></e-column>
             <e-column field='RequestType' headerText='Request Type' :filter='filter' width=90></e-column>
-            <e-column field='RequestedItem' headerText='Requested Item' :filter='filter' width=120></e-column>
+            <e-column field='RequestedItem' headerText='Requested Item' :filter='filter' clipMode='EllipsisWithTooltip' width=120></e-column>
             <e-column field='RequestedOn' headerText='RequestedOn' textAlign='Right' type='date' editType='datepickeredit' format='yMd' width=90></e-column>
             <e-column field='Priority' headerText='Priority' :filter='filter' width=70></e-column>
             <e-column field='Status' headerText='Status' width=70 :visible='false'></e-column>

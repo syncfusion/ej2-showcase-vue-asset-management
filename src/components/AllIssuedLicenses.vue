@@ -20,9 +20,9 @@
         <e-columns>
             <e-column field='TaskID' headerText='Task ID' textAlign='Right' width=60 :isPrimaryKey='true'></e-column>
             <e-column field='Employee' headerText='Employee' width=90></e-column>
-            <e-column field='Email' headerText='Email' width=120></e-column>
+            <e-column field='Email' headerText='Email' clipMode='EllipsisWithTooltip' width=120></e-column>
             <e-column field='Software' headerText='Software' :filter='filter' width=100></e-column>
-            <e-column field='LicenseKey' headerText='License Key' :filter='filter' width=100></e-column>
+            <e-column field='LicenseKey' headerText='License Key' :filter='filter' clipMode='EllipsisWithTooltip' width=100></e-column>
             <e-column field='IssuedOn' headerText='Issued On' textAlign='Right' type='date' editType='datepickeredit' format='yMd' width=80></e-column>
             <e-column field='Note' headerText='Notes' :visible='false'></e-column>
             <e-column headerText='' width='60' :commands='commands'></e-column>
