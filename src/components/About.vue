@@ -2,7 +2,7 @@
 <div class="about">
     <div class='about-heading'>About this sample</div>
     <div class='about-description'>This IT Asset Management demo application showcases using several Essential JS 2 Vue UI components together in a real-world application
-        scenario. You can further explore the source code of this application and use it as a reference for integrating Essential
+        scenario. You can further explore the <a href="https://github.com/syncfusion/ej2-showcase-vue-asset-management" target="_blank">source code of this application</a> and use it as a reference for integrating Essential
         JS 2 Vue UI components into your applications.</div>
     <div class='list-heading'>List of EJ2 Vue UI components used in this sample</div>
     <div class='about-component'>

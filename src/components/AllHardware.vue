@@ -19,7 +19,7 @@
     <ejs-grid ref="gridObj" class="r-space" :load="onGridLoad" :toolbarClick="editToolClicked" :actionBegin='onActionBegin' :actionComplete='onload' :toolbar="toolbar" :dataSource='gridData' :query='query' :allowSorting='true' :allowSelection='true' :selectionSettings='selectionSettings' :allowFiltering='true' :allowPaging='true' :allowGrouping='false' :pageSettings='pageSettings' :editSettings='editSettings' :filterSettings='filterSettings'>
         <e-columns>
             <e-column field='TaskID' headerText='Task ID' textAlign='Right' width=90 :isPrimaryKey='true'></e-column>
-            <e-column field='Name' headerText='Hardware' :filter='filter' width=90 :required='true'></e-column>
+            <e-column field='Name' headerText='Hardware' :filter='filter' width=90 clipMode='EllipsisWithTooltip' :required='true'></e-column>
             <e-column field='Category' headerText='Category' :filter='filter' width=90 :required='true'></e-column>
             <e-column field='SerialNo' headerText='Serial No' width=80 required=true></e-column>
             <e-column field='InvoiceNo' headerText='Invoice' width=70 required=true></e-column>

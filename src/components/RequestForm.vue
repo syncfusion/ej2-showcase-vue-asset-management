@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-lg-6 col-md-12">
           <label class="e-text">Employee Name</label>
-          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" :dataSource='this.$store.getters.empData' :fields='fields' required></ejs-autocomplete>
+          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" v-model="value" v-bind:value="value" ref='employeeInstance' :dataSource='this.$store.getters.empData' :fields='fields' required></ejs-autocomplete>
           <div id="errorEmp"></div>
         </div>
       </div>
@@ -117,7 +117,8 @@ export default Vue.extend({
         }
       },
       frmObj: undefined,
-      animationSettings: { effect: 'None' }
+      animationSettings: { effect: 'None' },
+      value: null
     }
   },
   watch: {
@@ -146,6 +147,7 @@ export default Vue.extend({
         this.btnName = 'Submit Request'
         document.getElementById('employee').value = ''
         document.getElementById('HardwareRB').checked = true
+        this.getType()
         document.getElementById('Hardware').value = ''
         document.getElementById('requested-on').value = new Date().toLocaleDateString()
         document.getElementById('priority').value = 'Normal'
@@ -156,7 +158,8 @@ export default Vue.extend({
         var row = this.rowData
         var type = row['RequestType']
         document.getElementById('taskID').value = row['TaskID']
-        document.getElementById('employee').value = row['Employee']
+        this.$refs.employeeInstance.ej2Instances.value = row['Employee']
+        this.$refs.employeeInstance.ej2Instances.dataBind()
         document.getElementById(type + 'RB').checked = true
         this.getType()
         document.getElementById('requested-on').value = row['RequestedOn'].toLocaleDateString()
@@ -182,7 +185,7 @@ export default Vue.extend({
             'Priority': document.getElementById('priority').value,
             'Status': 'Pending',
             'Note': document.getElementById('note').value,
-            'RequestedOn': document.getElementById('requested-on').value
+            'RequestedOn': new Date(document.getElementById('requested-on').value)
             })
             var activity = {
               'id': id,
@@ -208,7 +211,7 @@ export default Vue.extend({
             'RequestedItem': document.getElementById(type).value,
             'Priority': document.getElementById('priority').value,
             'Note': document.getElementById('note').value,
-            'RequestedOn': document.getElementById('requested-on').value,
+            'RequestedOn': new Date(document.getElementById('requested-on').value),
             'Status': this.rowData['Status']
               }
            var index = grid.selectedRowIndex

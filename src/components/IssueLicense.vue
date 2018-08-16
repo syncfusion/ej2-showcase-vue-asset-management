@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
           <label class="e-text">Employee Name</label>
-          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" :dataSource='this.$store.getters.empData' :fields='fields'></ejs-autocomplete>
+          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" v-model="value" v-bind:value="value" ref='employeeInstance' :dataSource='this.$store.getters.empData' :fields='fields'></ejs-autocomplete>
           <div id="errorEmp"></div>
         </div>
         <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
@@ -89,6 +89,7 @@ export default Vue.extend({
         }
       },
       frmObj: undefined,
+      value: null,
       animationSettings: { effect: 'None' }
     }
   },
@@ -115,7 +116,8 @@ export default Vue.extend({
         this.btnName = 'Save'
         var row = this.rowData
         document.getElementById('taskID').value = row['TaskID']
-        document.getElementById('employee').value = row['Employee']
+        this.$refs.employeeInstance.ej2Instances.value = row['Employee']
+        this.$refs.employeeInstance.ej2Instances.dataBind()
         document.getElementById('software').value = row['Software']
         document.getElementById('license-count').value = '10' // row['InvoiceNo']
         document.getElementById('license-key').value = row['LicenseKey']
@@ -137,7 +139,7 @@ export default Vue.extend({
             'Email': 'paul.henriot@sample.com',
             'Software': document.getElementById('software').value,
             'LicenseKey': document.getElementById('license-key').value,
-            'IssuedOn': document.getElementById('issue-date').value,
+            'IssuedOn': new Date(document.getElementById('issue-date').value),
             'Note': document.getElementById('note').value
             })
             var activity = {
@@ -163,7 +165,7 @@ export default Vue.extend({
               'Email': 'paul.henriot@sample.com',
               'Software': document.getElementById('software').value,
               'LicenseKey': document.getElementById('license-key').value,
-              'IssuedOn': document.getElementById('issue-date').value,
+              'IssuedOn': new Date(document.getElementById('issue-date').value),
               'Note': document.getElementById('note').value
               }
            var index = grid.selectedRowIndex
