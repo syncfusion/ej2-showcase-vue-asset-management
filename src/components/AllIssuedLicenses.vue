@@ -86,9 +86,11 @@ export default Vue.extend({
       dateRangeChanged: function (args) {
         // check wheather the value is empty or not
         if (args.startDate && args.endDate) {
-          var predicatesStart = new Predicate('IssuedOn', 'greaterthanorequal', args.startDate)
-          var predicatesEnd = new Predicate('IssuedOn', 'lessthanorequal', args.endDate)
-          this.filterSettings = {type: 'Menu', columns: [predicatesStart, predicatesEnd]}
+          var filter = [
+            { field: 'IssuedOn', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
+            { field: 'IssuedOn', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
+          ];
+          this.filterSettings = {type: 'Menu', columns: filter}
         } else {
           this.filterSettings = {type: 'Menu', columns: []}
         }
