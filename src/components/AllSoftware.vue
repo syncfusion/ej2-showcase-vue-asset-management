@@ -44,7 +44,6 @@ import { DatePickerPlugin, DateRangePickerPlugin } from '@syncfusion/ej2-vue-cal
 import { DropDownListComponent } from '@syncfusion/ej2-vue-dropdowns'
 import AddSoftware from '@/components/AddSoftware'
 import { softwareData } from '../datasource.js'
-import { Predicate } from '@syncfusion/ej2-data'
 import { Browser } from '@syncfusion/ej2-base'
 
 Vue.use(DateRangePickerPlugin)
@@ -93,7 +92,7 @@ export default Vue.extend({
          var filter = [
             { field: 'DOP', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
             { field: 'DOP', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
-          ];
+          ]
           this.filterSettings = {type: 'Menu', columns: filter}
         } else {
           this.filterSettings = {type: 'Menu', columns: []}
