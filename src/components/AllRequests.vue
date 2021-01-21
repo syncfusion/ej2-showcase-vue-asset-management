@@ -93,7 +93,7 @@ export default Vue.extend({
           var filter = [
             { field: 'RequestedOn', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
             { field: 'RequestedOn', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
-          ];
+          ]
           this.filterSettings = {type: 'Menu', columns: filter}
         } else {
           this.filterSettings = {type: 'Menu', columns: []}

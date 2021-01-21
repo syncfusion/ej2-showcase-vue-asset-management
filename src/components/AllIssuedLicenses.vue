@@ -41,7 +41,6 @@ import { DropDownListComponent } from '@syncfusion/ej2-vue-dropdowns'
 import IssueLicense from '@/components/IssueLicense'
 import { licenseData } from '../datasource.js'
 import { Browser } from '@syncfusion/ej2-base'
-import { Predicate } from '@syncfusion/ej2-data'
 
 Vue.use(DateRangePickerPlugin)
 Vue.use(GridPlugin)
@@ -89,7 +88,7 @@ export default Vue.extend({
           var filter = [
             { field: 'IssuedOn', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
             { field: 'IssuedOn', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
-          ];
+          ]
           this.filterSettings = {type: 'Menu', columns: filter}
         } else {
           this.filterSettings = {type: 'Menu', columns: []}
