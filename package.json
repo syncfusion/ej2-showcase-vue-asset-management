@@ -1,5 +1,5 @@
 {
-  "name": "quickstart",
+  "name": "ej2-showcase-vue-asset-management",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,8 +8,22 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@syncfusion/ej2-vue-grids": "*",
+    "@syncfusion/ej2-vue-base": "*",
+    "@syncfusion/ej2-vue-buttons": "*",
+    "@syncfusion/ej2-vue-calendars": "*",
+    "@syncfusion/ej2-vue-charts": "*",
+    "@syncfusion/ej2-vue-dropdowns": "*",
+    "@syncfusion/ej2-vue-inputs": "*",
+    "@syncfusion/ej2-vue-lists": "*",
+    "@syncfusion/ej2-vue-navigations": "*",
+    "@syncfusion/ej2-vue-notifications": "*",
+    "@syncfusion/ej2-vue-popups": "*",
+    "@syncfusion/ej2-vue-treemap": "*",
     "core-js": "^3.8.3",
-    "vue": "^2.6.14"
+    "vue-router": "^3.0.1",
+    "vue": "^2.6.14",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

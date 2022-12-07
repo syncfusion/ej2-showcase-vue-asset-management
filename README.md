@@ -1,4 +1,4 @@
-# quickstart
+# ej2-showcase-vue-asset-management
 
 ## Project setup
 ```
