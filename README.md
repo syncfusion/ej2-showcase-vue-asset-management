@@ -1,24 +1,22 @@
-# ej2-showcase-vue-asset-management
+# Asset Management System
+A showcase application to track and visualize the software and hardware assets of an organization. This app was built using [Syncfusion Essential JS 2 Vue UI components](https://www.syncfusion.com/products/vue).
 
-## Project setup
-```
-npm install
-```
+## Prerequisites
+   To run the application, [npm and node.js](https://docs.npmjs.com/getting-started/installing-node) are required. The node.js version 6.0.0 or above and the npm version 3.0.0 or above can be used.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Build Setup
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Install dependencies
+   npm install
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Serve with hot reload at localhost:8080
+   Run `npm run serve` command to start the development server at http://localhost:8080. The app will be reloaded automatically when the source file is changed.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Build for production with minification
+   npm run build
+
+## Demo
+
+[Asset Management System](https://ej2.syncfusion.com/showcase/vue/assetmanagement)
+
+Also please check out other showcase samples built using Essential JS 2 components [here](https://ej2.syncfusion.com/home/vue.html).

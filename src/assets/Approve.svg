@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Asset-View" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Asset-View_4-Copy-5" transform="translate(-1105.000000, -287.000000)" fill="#0BB60E">
+            <path d="M1113,287 C1108.584,287 1105,290.584 1105,295 C1105,299.416 1108.584,303 1113,303 C1117.416,303 1121,299.416 1121,295 C1121,290.584 1117.416,287 1113,287 L1113,287 Z M1111.4,299 L1107.4,295 L1108.528,293.872 L1111.4,296.736 L1117.472,290.664 L1118.6,291.8 L1111.4,299 L1111.4,299 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
