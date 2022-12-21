@@ -8,7 +8,7 @@
             <span id="hamburger" class="e-icons menu" v-on:click="openClick"></span>
             <div class="header">
                 <div class="app-title-device" v-show="isDevice">
-                    <div class="title-logo"></div>
+                    <h1 class="title-logo"></h1>
                 </div>
                 <img id="profile-img" src="./assets/Avatar_Male.svg" v-on:click="AccountMenu()" >
                 <div id="account-context" v-show="logoutPopup" >
@@ -319,6 +319,7 @@ body {
 .title-logo {
     height: 20px;
     background: url('./assets/asset-management-logo.png') no-repeat center;
+    margin: 0;
 }
 .app-title-device {
     position: absolute;
