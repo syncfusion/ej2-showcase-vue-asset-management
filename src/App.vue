@@ -8,7 +8,7 @@
             <span id="hamburger" class="e-icons menu" v-on:click="openClick"></span>
             <div class="header">
                 <div class="app-title-device" v-show="isDevice">
-                    <div class="title-logo"></div>
+                    <h1 class="title-logo"></h1>
                 </div>
                 <img id="profile-img" src="./assets/Avatar_Male.svg" v-on:click="AccountMenu()" >
                 <div id="account-context" v-show="logoutPopup" >
@@ -319,6 +319,7 @@ body {
 .title-logo {
     height: 20px;
     background: url('./assets/asset-management-logo.png') no-repeat center;
+    margin: 0;
 }
 .app-title-device {
     position: absolute;
@@ -485,7 +486,7 @@ import { SidebarPlugin, AccordionPlugin } from '@syncfusion/ej2-vue-navigations'
 import { ListViewPlugin } from '@syncfusion/ej2-vue-lists'
 import { enableRipple, Browser, L10n } from '@syncfusion/ej2-base'
 import { ToastPlugin } from '@syncfusion/ej2-vue-notifications'
-import Notification from '@/components/Notification'
+import Notification from '@/components/NotificationTemplate'
 
 // Added for command Column tooltip
 L10n.load({
@@ -608,7 +609,7 @@ export default Vue.extend({
             this.notifyBellClicked = false
             this.sidebarClicked = false
         },
-        AccountMenu: function (event) {
+        AccountMenu: function () {
             this.logoutPopup = !this.logoutPopup
             this.logoutPopupClicked = true
         },

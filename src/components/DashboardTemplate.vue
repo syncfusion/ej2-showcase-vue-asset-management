@@ -100,11 +100,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    requestClick: function (event) {
+    requestClick: function () {
         this.$router.push({ path: '/Requests' })
         this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '05'})
     },
-    licenseClick: function (event) {
+    licenseClick: function () {
         this.$router.push({ path: '/IssuedLicenses' })
         this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '04'})
     },

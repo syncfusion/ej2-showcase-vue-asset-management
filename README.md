@@ -10,7 +10,7 @@ A showcase application to track and visualize the software and hardware assets o
    npm install
 
 ### Serve with hot reload at localhost:8080
-   Run `npm run dev` command to start the development server at http://localhost:8080. The app will be reloaded automatically when the source file is changed.
+   Run `npm run serve` command to start the development server at http://localhost:8080. The app will be reloaded automatically when the source file is changed.
 
 ### Build for production with minification
    npm run build

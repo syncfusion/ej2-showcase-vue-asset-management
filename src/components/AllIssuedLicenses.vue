@@ -133,7 +133,6 @@ export default Vue.extend({
       grid: [Edit, Group, Filter, Page, Selection, CommandColumn, Toolbar]
   },
   components: {
-    DropDownListComponent,
     IssueLicense
   }
 })

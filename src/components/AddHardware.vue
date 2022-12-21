@@ -188,7 +188,7 @@ export default Vue.extend({
     onFileRemove: function (args) {
         args.postRawFile = false
     },
-    created: function (args) {
+    created: function () {
     },
     dialogClose: function () {
       this.$emit('close')

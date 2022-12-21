@@ -194,9 +194,6 @@ export default Vue.extend({
       }
     }
   },
-  components: {
-    DropDownListComponent
-  },
   props: {
     /** Whether the dialog is currently showing */
     showing: {

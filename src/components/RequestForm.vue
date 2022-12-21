@@ -126,9 +126,6 @@ export default Vue.extend({
       this.$dispatch('selectedType', newType)
     }
   },
-  components: {
-    DropDownListComponent
-  },
   mounted: function () {
     this.frmObj = new FormValidator('#formId', this.options)
   },
@@ -237,7 +234,6 @@ export default Vue.extend({
         this.frmObj.reset()
         this.$refs.dialogObj.hide()
         this.$emit('close')
-      } else {
       }
     }
   },

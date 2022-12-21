@@ -125,10 +125,6 @@ export default Vue.extend({
       animationSettings: { effect: 'None' }
     }
   },
-  components: {
-    ButtonComponent,
-    DropDownListComponent
-  },
   mounted: function () {
     this.frmObj = new FormValidator('#formId', this.options)
   },

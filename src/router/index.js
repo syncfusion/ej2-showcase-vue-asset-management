@@ -6,11 +6,11 @@ import AddSoftware from '@/components/AddSoftware'
 import RequestForm from '@/components/RequestForm'
 import IssueLicense from '@/components/IssueLicense'
 import AllHardware from '@/components/AllHardware'
-import dashboard from '@/components/Dashboard'
+import dashboard from '@/components/DashboardTemplate'
 import AllSoftware from '@/components/AllSoftware'
 import AllRequests from '@/components/AllRequests'
 import AllIssuedLicenses from '@/components/AllIssuedLicenses'
-import About from '@/components/About'
+import About from '@/components/AboutTemplate'
 
 Vue.use(Router)
 
