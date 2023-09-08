@@ -583,7 +583,7 @@ export default Vue.extend({
             if (args.text !== 'Dashboard') {
                 vuePath += args.text.replace(' ', '')
             }
-            this.$router.push({ path: vuePath })
+            this.$router.push({ path: vuePath }).catch(()=>{})
             this.$refs.notifybarObj.hide()
         },
         openClick: function () {

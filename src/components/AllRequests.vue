@@ -164,7 +164,7 @@ export default Vue.extend({
         var row = rowObj.data
 
         var grid = document.querySelector('.e-grid')['ej2_instances'][0]
-        var index = grid.selectedRowIndex
+        var index = parseInt(args.target.closest('td').getAttribute('index'))
         grid.editModule.updateRow(index, {'TaskID': row['TaskID'], 'Status': 'Approved'})
 
         var activity = {
