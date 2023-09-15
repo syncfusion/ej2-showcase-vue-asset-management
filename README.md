@@ -1,53 +1,22 @@
+# Asset Management System
+A showcase application to track and visualize the software and hardware assets of an organization. This app was built using [Syncfusion Essential JS 2 Vue UI components](https://www.syncfusion.com/products/vue).
 
-# Vue Showcase Sample Configuration
+## Prerequisites
+   To run the application, [npm and node.js](https://docs.npmjs.com/getting-started/installing-node) are required. The node.js version 6.0.0 or above and the npm version 3.0.0 or above can be used.
 
-This application includes a sample of the Vue Showcase template along with essential configurations and router integration, designed to facilitate a seamless start for your own projects.
+## Build Setup
 
-The Vue showcase demo can be accessed at the following location:
+### Install dependencies
+   npm install
 
-[https://npmci.syncfusion.com/development/showcase/vue/sample_template/](https://npmci.syncfusion.com/development/showcase/vue/sample_template/)
+### Serve with hot reload at localhost:8080
+   Run `npm run serve` command to start the development server at http://localhost:8080. The app will be reloaded automatically when the source file is changed.
 
-## package.json
+### Build for production with minification
+   npm run build
 
-1. Should replace the name from `@syncfusion/ej2-vue-sample_template` to `@syncfusion/ej2-vue-{sample-name}`.
-2. Should replace the description from `Essential JS 2 - Sample name` to `Essential JS 2 - {Your sample-Name}`.
-3. Required ej2 component dependencies should be placed inside the `dependencies` section.
+## Demo
 
-### Source
+[Asset Management System](https://ej2.syncfusion.com/showcase/vue/assetmanagement)
 
-All components files related to your sample should be placed inside the `src` location.
-
-## Installation
-
-To install the application dependencies, use the following command:
-
-```
-npm install
-```
-
-### Compiles and minifies for production
-
-To build the application, use the following command:
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-To check the lint errors in the application, use the following command:
-
-```
-npm run lint
-```
-
-### Compiles and hot-reloads for development
-
-To run the application in the browser, use the following command:
-
-```
-npm run serve
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Also please check out other showcase samples built using Essential JS 2 components [here](https://ej2.syncfusion.com/home/vue.html).
