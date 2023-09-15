@@ -10,7 +10,7 @@
         <div tabindex="0" class="e-card" id="card-request" @click="requestClick($event)">
             <div class="e-card-header">
                 <div class="e-card-header-caption">
-                    <div class="e-card-header-title">{{this.$store.getters.requests}}</div>
+                    <div class="e-card-header-title">{{store.getters.requests}}</div>
                     <div class="e-card-sub-title">Requests Processed</div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <div tabindex="0" class="e-card" id="card-license" @click="licenseClick($event)">
             <div class="e-card-header">
                 <div class="e-card-header-caption">
-                    <div class="e-card-header-title">{{this.$store.getters.licenses}}</div>
+                    <div class="e-card-header-title">{{store.getters.licenses}}</div>
                     <div class="e-card-sub-title">Licenses Issued</div>
                 </div>
             </div>
@@ -69,55 +69,45 @@
     </div>
     <div class="col-lg-4 list-surface">
         <div class="list-area">
-        <ejs-listview id='listview_template' ref='list_template' :fields='fields' :dataSource='data' :showHeader='header' :headerTitle='listTitle' :actionComplete='onComplete' :template='ltemplate'></ejs-listview>
+        <ejs-listview id='listview_template' ref='list_template' :fields='fields' :dataSource='data' :showHeader='header' :headerTitle='listTitle' :template='ltemplate'></ejs-listview>
         </div>
     </div>
 <!-- </div> -->
 </div>
 </div>
 </template>
-<script>
-import Vue from 'vue'
-import { ListViewPlugin } from '@syncfusion/ej2-vue-lists'
-import ActivityTemplate from './ActivityTemplate.vue'
-import SoftwareLicenseChart from '@/components/dashboard/SoftwareLicenseChart'
-import HardwareStatusChart from '@/components/dashboard/HardwareStatusChart'
-import HardwareCategoryChart from '@/components/dashboard/HardwareCategoryChart'
-import SoftwareCategoryChart from '@/components/dashboard/SoftwareCategoryChart'
+<script setup>
+import { ListViewComponent as EjsListview } from '@syncfusion/ej2-vue-lists';
+import ActivityTemplate from './ActivityTemplate.vue';
+import SoftwareLicenseChart from '@/components/dashboard/SoftwareLicenseChart';
+import HardwareStatusChart from '@/components/dashboard/HardwareStatusChart';
+import HardwareCategoryChart from '@/components/dashboard/HardwareCategoryChart';
+import SoftwareCategoryChart from '@/components/dashboard/SoftwareCategoryChart';
+import { createApp } from "vue";
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
-Vue.use(ListViewPlugin)
-export default Vue.extend({
-  data: function () {
-    return {
-    header: true,
-    data: this.$store.state.activityData,
-    // eslint-disable-next-line
-    ltemplate: function () {
-          return {template: ActivityTemplate}
-      },
-    listTitle: 'Recent Activities',
-    fields: { 'id': 'Employee' }
-    }
-  },
-  methods: {
-    requestClick: function () {
-        this.$router.push({ path: '/Requests' })
-        this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '05'})
-    },
-    licenseClick: function () {
-        this.$router.push({ path: '/IssuedLicenses' })
-        this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '04'})
-    },
-    onComplete: function () {
-    }
-  },
-  components: {
-      SoftwareLicenseChart,
-      HardwareStatusChart,
-      HardwareCategoryChart,
-      SoftwareCategoryChart
-  }
-})
+const router = useRouter();
+const store = useStore();
+const app = createApp();
+
+const header = true;
+const data = store.state.activityData;
+const ltemplate = function () {
+    return { template: app.component("dashboardListTemplate", ActivityTemplate) };
+};
+const listTitle = 'Recent Activities';
+const fields = { 'id': 'Employee' };
+
+function requestClick() {
+    router.push({ path: '/Requests' });
+    // this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '05'});
+}
+function licenseClick() {
+    router.push({ path: '/IssuedLicenses' });
+    // this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '04'});
+}
+
 </script>
 
 <style>

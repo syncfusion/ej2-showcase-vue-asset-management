@@ -12,12 +12,12 @@
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
           <label class="e-text">Employee Name</label>
-          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" v-model="value" v-bind:value="value" ref='employeeInstance' :dataSource='this.$store.getters.empData' :fields='fields'></ejs-autocomplete>
+          <ejs-autocomplete id="employee" name="Emp" data-msg-containerid="errorEmp" v-model="value" v-bind:value="value" ref='employeeInstance' :dataSource='store.getters.empData' :fields='fields'></ejs-autocomplete>
           <div id="errorEmp"></div>
         </div>
         <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
           <label class="e-text">Software</label>
-          <ejs-dropdownlist id="software" name="Name" :dataSource ="this.$store.getters.softwareNames" :fields='softwareFields'></ejs-dropdownlist>
+          <ejs-dropdownlist id="software" name="Name" :dataSource ="store.getters.softwareNames" :fields='softwareFields'></ejs-dropdownlist>
         </div>
       </div>
       <div class="row">
@@ -46,7 +46,7 @@
 
       <div class="row pull-right">
         <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6">
-          <ejs-button id="primarybtn" :isPrimary="true" @click.native="addRecord">{{btnName}}</ejs-button>
+          <ejs-button id="primarybtn" :isPrimary="true" v-on:click="addRecord">{{btnName}}</ejs-button>
         </div>
       </div>
     </div>
@@ -54,170 +54,170 @@
   </form>
 </ejs-dialog>
 </template>
-<script>
-import Vue from 'vue'
-import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons'
-import { DatePickerPlugin } from '@syncfusion/ej2-vue-calendars'
-import { DropDownListComponent } from '@syncfusion/ej2-vue-dropdowns'
-import { FormValidator } from '@syncfusion/ej2-vue-inputs'
-import { employeeData } from '../datasource.js'
-import { DataManager, Query, Predicate } from '@syncfusion/ej2-data'
+<script setup>
+import { onMounted, computed, getCurrentInstance, ref } from 'vue';
+import { DialogComponent as EjsDialog } from '@syncfusion/ej2-vue-popups';
+import { ButtonComponent as EjsButton } from '@syncfusion/ej2-vue-buttons';
+import { DatePickerComponent as EjsDatepicker } from '@syncfusion/ej2-vue-calendars';
+import { DropDownListComponent as EjsDropdownlist, AutoCompleteComponent as EjsAutocomplete } from '@syncfusion/ej2-vue-dropdowns';
+import { FormValidator } from '@syncfusion/ej2-vue-inputs';
+import { employeeData } from '../datasource.js';
+import { DataManager, Query, Predicate } from '@syncfusion/ej2-data';
+import { useStore } from 'vuex';
 
-Vue.component(DropDownListComponent)
-Vue.use(DatePickerPlugin)
-Vue.use(ButtonPlugin)
-export default Vue.extend({
-  data: function () {
-    return {
-      fields: {value: 'Employee'},
-      softwareFields: { text: 'Name', value: 'TaskID' },
-      header: 'Issue License',
-      target: document.body,
-      showCloseIcon: true,
-      width: '500px',
-      btnName: 'Submit',
-      isModal: true,
-      maxDate: new Date(),
-      options: {
-        // Initialize the CustomPlacement.
-        customPlacement: function (inputElement, errorElement) {
-          inputElement.parentElement.nextElementSibling.appendChild(errorElement)
-        },
-        rules: {
-          Emp: { required: true },
-          DOI: { required: true, date: true }
-        }
-      },
-      frmObj: undefined,
-      value: null,
-      animationSettings: { effect: 'None' }
-    }
+const store = useStore();
+const root = getCurrentInstance();
+const dialogObj = ref(null);
+const employeeInstance = ref(null);
+
+const fields = {value: 'Employee'};
+const softwareFields = { text: 'Name', value: 'TaskID' };
+let header = 'Issue License';
+const target = document.body;
+const showCloseIcon = true;
+const width = '500px';
+let btnName = 'Submit';
+const isModal = true;
+const maxDate = new Date();
+const options = {
+  // Initialize the CustomPlacement.
+  customPlacement: function (inputElement, errorElement) {
+    inputElement.parentElement.nextElementSibling.appendChild(errorElement);
   },
-  mounted: function () {
-    this.frmObj = new FormValidator('#formId', this.options)
-  },
-  methods: {
-    dialogClose: function () {
-      this.$emit('close')
-    },
-    dialogOpen: function () {
-      this.frmObj.reset()
-      if (!this.isEdit) {
-        this.header = 'Issue License'
-        this.btnName = 'Submit'
-        document.getElementById('employee').value = ''
-        document.getElementById('software').value = ''
-        document.getElementById('license-count').value = '0'
-        document.getElementById('license-key').value = ''
-        document.getElementById('issue-date').value = new Date().toLocaleDateString()
-        document.getElementById('note').value = ''
-      } else {
-        this.header = 'Edit Issued license'
-        this.btnName = 'Save'
-        var row = this.rowData
-        document.getElementById('taskID').value = row['TaskID']
-        this.$refs.employeeInstance.ej2Instances.value = row['Employee']
-        this.$refs.employeeInstance.ej2Instances.dataBind()
-        document.getElementById('software').value = row['Software']
-        document.getElementById('license-count').value = '10' // row['InvoiceNo']
-        document.getElementById('license-key').value = row['LicenseKey']
-        document.getElementById('issue-date').value = row['IssuedOn'].toLocaleDateString()
-        document.getElementById('note').value = row['Note']
-      }
-      this.$refs.dialogObj.show()
-    },
-    addRecord: function () {
-      var grid = document.querySelector('.e-grid')['ej2_instances'][0]
-      var userName = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', this.$store.state.currentUserID)))[0]['Employee']
-      var userImg = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', this.$store.state.currentUserID)))[0]['ImgSrc']
-      if (this.frmObj.validate()) {
-          if (!this.isEdit) {
-            var id = this.$store.state.activityData.length
-            grid.addRecord({
-            'TaskID': grid.dataSource.length + 1,
-            'Employee': document.getElementById('employee').value,
-            'Email': 'paul.henriot@sample.com',
-            'Software': document.getElementById('software').value,
-            'LicenseKey': document.getElementById('license-key').value,
-            'IssuedOn': new Date(document.getElementById('issue-date').value),
-            'Note': document.getElementById('note').value
-            })
-            var activity = {
-              'id': id,
-              'Employee': userName,
-              'ImgSrc': userImg,
-              'TimeStamp': new Date().toLocaleDateString(),
-              'Message': 'A new License for software' + document.getElementById('software').value + ' has been issued'
-            }
-            this.$store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
-              this.$root.$children[0].$refs.toastRef.show({
-                title: 'Successs!',
-                content: 'License Issued successfully',
-                cssClass: 'e-toast-success',
-                icon: 'e-success toast-icons'
-              })
-            }).catch((reason) => {
-              alert(reason)
-            })
-          } else {
-            var data = {'TaskID': +document.getElementById('taskID').value,
-              'Employee': document.getElementById('employee').value,
-              'Email': 'paul.henriot@sample.com',
-              'Software': document.getElementById('software').value,
-              'LicenseKey': document.getElementById('license-key').value,
-              'IssuedOn': new Date(document.getElementById('issue-date').value),
-              'Note': document.getElementById('note').value
-              }
-           var index = grid.selectedRowIndex
-            grid.editModule.updateRow(index, data)
-            activity = {
-              'id': id,
-              'Employee': userName,
-              'ImgSrc': userImg,
-              'TimeStamp': new Date().toLocaleDateString(),
-              'Message': 'The License for software ' + document.getElementById('software').value + ' has been edited'
-            }
-            this.$store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
-              this.$root.$children[0].$refs.toastRef.show({
-                title: 'Successs!',
-                content: 'License updated successfully',
-                cssClass: 'e-toast-success',
-                icon: 'e-success toast-icons'
-              })
-            }).catch((reason) => {
-              alert(reason)
-            })
-          }
-        this.frmObj.reset()
-        this.$refs.dialogObj.hide()
-        this.$emit('close')
-      }
-    }
-  },
-  props: {
-    /** Whether the dialog is currently showing */
-    showing: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    isEdit: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    rowData: {
-      type: Object,
-      required: false,
-      default: null
-    }
-  },
-  computed: {
-    isShowing () {
-      return this.showing
-    }
+  rules: {
+    Emp: { required: true },
+    DOI: { required: true, date: true }
   }
+};
+let frmObj = undefined;
+const value = null;
+const animationSettings = { effect: 'None' };
+
+// eslint-disable-next-line no-undef
+onMounted(() => {
+  frmObj = new FormValidator('#formId', options);
 })
+function dialogClose() {
+  emit('close');
+}
+function dialogOpen () {
+  frmObj.reset();
+  if (!props.isEdit) {
+    header = 'Issue License';
+    btnName = 'Submit';
+    document.getElementById('employee').value = '';
+    document.getElementById('software').value = '';
+    document.getElementById('license-count').value = '0';
+    document.getElementById('license-key').value = '';
+    document.getElementById('issue-date').value = new Date().toLocaleDateString();
+    document.getElementById('note').value = '';
+  } else {
+    header = 'Edit Issued license';
+    btnName = 'Save';
+    var row = props.rowData;
+    document.getElementById('taskID').value = row['TaskID'];
+    employeeInstance.value.ej2Instances.value = row['Employee'];
+    employeeInstance.value.ej2Instances.dataBind();
+    document.getElementById('software').value = row['Software'];
+    document.getElementById('license-count').value = '10' // row['InvoiceNo'];
+    document.getElementById('license-key').value = row['LicenseKey'];
+    document.getElementById('issue-date').value = row['IssuedOn'].toLocaleDateString();
+    document.getElementById('note').value = row['Note'];
+  }
+  dialogObj.value.show();
+}
+function addRecord() {
+  var grid = document.querySelector('.e-grid')['ej2_instances'][0];
+  var userName = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', store.state.currentUserID)))[0]['Employee'];
+  var userImg = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', store.state.currentUserID)))[0]['ImgSrc'];
+  if (frmObj.validate()) {
+    if (!props.isEdit) {
+      var id = store.state.activityData.length;
+      grid.addRecord({
+        'TaskID': grid.dataSource.length + 1,
+        'Employee': document.getElementById('employee').value,
+        'Email': 'paul.henriot@sample.com',
+        'Software': document.getElementById('software').value,
+        'LicenseKey': document.getElementById('license-key').value,
+        'IssuedOn': new Date(document.getElementById('issue-date').value),
+        'Note': document.getElementById('note').value
+      });
+      var activity = {
+        'id': id,
+        'Employee': userName,
+        'ImgSrc': userImg,
+        'TimeStamp': new Date().toLocaleDateString(),
+        'Message': 'A new License for software' + document.getElementById('software').value + ' has been issued'
+      };
+      store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
+        root.root.refs.toastRef.show({
+          title: 'Successs!',
+          content: 'License Issued successfully',
+          cssClass: 'e-toast-success',
+          icon: 'e-success toast-icons'
+        });
+      }).catch((reason) => {
+        alert(reason);
+      });
+    } else {
+      var data = {
+        'TaskID': +document.getElementById('taskID').value,
+        'Employee': document.getElementById('employee').value,
+        'Email': 'paul.henriot@sample.com',
+        'Software': document.getElementById('software').value,
+        'LicenseKey': document.getElementById('license-key').value,
+        'IssuedOn': new Date(document.getElementById('issue-date').value),
+        'Note': document.getElementById('note').value
+      };
+      var index = grid.selectedRowIndex;
+      grid.editModule.updateRow(index, data);
+      activity = {
+        'id': id,
+        'Employee': userName,
+        'ImgSrc': userImg,
+        'TimeStamp': new Date().toLocaleDateString(),
+        'Message': 'The License for software ' + document.getElementById('software').value + ' has been edited'
+      };
+      store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
+        root.root.refs.toastRef.show({
+          title: 'Successs!',
+          content: 'License updated successfully',
+          cssClass: 'e-toast-success',
+          icon: 'e-success toast-icons'
+        });
+      }).catch((reason) => {
+        alert(reason);
+      });
+    }
+    frmObj.reset();
+    dialogObj.value.hide();
+    emit('close');
+  }
+}
+// eslint-disable-next-line no-undef
+const emit = defineEmits(['close']);
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  /** Whether the dialog is currently showing */
+  showing: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  isEdit: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  rowData: {
+    type: Object,
+    required: false,
+    default: null
+  }
+});
+const isShowing = computed(() => {
+  return props.showing;
+});
 </script>
 
 <style scoped>

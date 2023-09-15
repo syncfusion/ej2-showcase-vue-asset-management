@@ -1,7 +1,7 @@
 {
   "name": "@syncfusion/ej2-vue-asset-management",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
+  "version": "0.1.0",
+  "description": "Essential JS 2 - Asset management",
   "author": "Syncfusion Inc.",
   "private": true,
   "scripts": {
@@ -22,9 +22,9 @@
     "@syncfusion/ej2-vue-popups": "*",
     "@syncfusion/ej2-vue-treemap": "*",
     "core-js": "^3.8.3",
-    "vue-router": "^3.0.1",
-    "vue": "^2.6.14",
-    "vuex": "^3.0.1"
+    "vue": "^3.2.13",
+    "vue-router": "^4.2.4",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -34,7 +34,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.7.14"
   },
   "eslintConfig": {
     "root": true,
@@ -42,7 +42,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
     "parserOptions": {
@@ -53,6 +53,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not dead"
+    "not dead",
+    "not ie 11"
   ]
 }

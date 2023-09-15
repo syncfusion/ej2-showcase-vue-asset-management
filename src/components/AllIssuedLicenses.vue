@@ -7,7 +7,7 @@
     <div class="row top-row">
       <div class="col-xs-12 col-sm-12 col-lg-7 col-md-12"><h3>View Issued Licenses</h3></div>
       <div class="col-xs-12 col-sm-6 col-lg-2 col-md-6">
-        <ejs-button id="primarybtn" class="asset-btn" :isPrimary="true" v-on:click.native="AddBtnClick"> <span class="e-add-icon"></span> Issue License</ejs-button>
+        <ejs-button id="primarybtn" class="asset-btn" :isPrimary="true" v-on:click="AddBtnClick"> <span class="e-add-icon"></span> Issue License</ejs-button>
       </div>
       <div class="col-xs-12 col-sm-6 col-lg-3 col-md-6 daterange overview-range-picker">
       <ejs-daterangepicker ref='dateRangePickerObject' class="e-input-group e-input-custom-tag e-control-wrapper e-date-range-wrapper" id='date-wrapper' :placeholder="waterMark" :change="dateRangeChanged">
@@ -32,110 +32,91 @@
     </div>
   </div>
 </template>
-<script>
-import Vue from 'vue'
-import { GridPlugin, Edit, Filter, Group, Page, Selection, CommandColumn, Toolbar } from '@syncfusion/ej2-vue-grids'
-import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons'
-import { DatePickerPlugin, DateRangePickerPlugin } from '@syncfusion/ej2-vue-calendars'
-import { DropDownListComponent } from '@syncfusion/ej2-vue-dropdowns'
-import IssueLicense from '@/components/IssueLicense'
-import { licenseData } from '../datasource.js'
-import { Browser } from '@syncfusion/ej2-base'
+<script setup>
+import { ref, provide } from 'vue';
+import { GridComponent as EjsGrid, ColumnsDirective as EColumns, ColumnDirective as EColumn,
+  Edit, Filter, Group, Page, Selection, CommandColumn, Toolbar } from '@syncfusion/ej2-vue-grids';
+import { ButtonComponent as EjsButton } from '@syncfusion/ej2-vue-buttons';
+import { DateRangePickerComponent as EjsDaterangepicker } from '@syncfusion/ej2-vue-calendars';
+import IssueLicense from '@/components/IssueLicense';
+import { licenseData } from '../datasource.js';
+import { Browser } from '@syncfusion/ej2-base';
 
-Vue.use(DateRangePickerPlugin)
-Vue.use(GridPlugin)
-Vue.component(DropDownListComponent)
-Vue.use(DatePickerPlugin)
-Vue.use(ButtonPlugin)
+const gridObj = ref(null);
+const dlgShow = ref(false);
+const isEditing = ref(false);
+const rowData = ref(null);
+const waterMark = 'Select a range';
+const gridData = licenseData;
+const editSettings = { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' };
+let toolbar = undefined;
+const pageSettings = { pageCount: 5, pageSize: 10 };
+let filterSettings = { type: 'Menu', columns: [] };
+const filter = { type: 'CheckBox' };
+const selectionSettings = { persistSelection: true };
+const commands = [{ type: 'edit', buttonOption: { iconCss: 'e-icons e-edit', cssClass: 'e-flat e-noback', click: editBtnClick } },
+  { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat e-noback' } }];
 
-export default Vue.extend({
-  data: function () {
-    return {
-      dlgShow: false,
-      isEditing: false,
-      rowData: null,
-      waterMark: 'Select a range',
-      gridData: licenseData,
-      editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' },
-      toolbar: undefined,
-      editparams: { params: { popupHeight: '300px' } },
-      pageSettings: { pageCount: 5, pageSize: 10 },
-      filterSettings: { type: 'Menu', columns: [] },
-      filter: { type: 'CheckBox' },
-      selectionSettings: { persistSelection: true },
-      commands: [{ type: 'edit', buttonOption: { iconCss: 'e-icons e-edit', cssClass: 'e-flat e-noback', click: this.editBtnClick } },
-        { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat e-noback' } }]
-    }
-  },
-  methods: {
-      onGridLoad: function () {
-        if (Browser.isDevice) {
-        this.toolbar = [{ text: 'Edit', tooltipText: 'Edit', prefixIcon: 'e-edit', id: 'editTool' }, 'Delete']
-        this.$refs.gridObj.ej2Instances.columns[7].visible = false
-        }
-      },
-      onload: function () {
-      },
-      onActionBegin: function (args) {
-        if (args.requestType === 'beginEdit') {
-          this.editBtnClick(args)
-          args.cancel = true
-        }
-      },
-      dateRangeChanged: function (args) {
-        // check wheather the value is empty or not
-        if (args.startDate && args.endDate) {
-          var filter = [
-            { field: 'IssuedOn', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
-            { field: 'IssuedOn', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
-          ]
-          this.filterSettings = {type: 'Menu', columns: filter}
-        } else {
-          this.filterSettings = {type: 'Menu', columns: []}
-        }
-      },
-      AddBtnClick: function () {
-          this.dlgShow = !this.dlgShow
-          this.isEditing = false
-      },
-      editToolClicked: function (args) {
-        if (args.item.id === 'editTool') {
-          this.isEditing = true
-          var rows = this.$refs.gridObj.ej2Instances.getSelectedRows()[0]
-           if (!rows) {
-           this.$refs.gridObj.ej2Instances.editModule.showDialog('EditOperationAlert', this.$refs.gridObj.ej2Instances.editModule.alertDObj)
-           return
-          }
-          let rowObj = this.$refs.gridObj.ej2Instances.getRowObjectFromUID(rows.getAttribute('data-uid'))
-          this.rowData = rowObj.data
-          this.dlgShow = !this.dlgShow
-        }
-      },
-      editBtnClick: function (args) {
-        this.isEditing = true
-        this.dlgShow = !this.dlgShow
-        if (args.type === 'actionBegin') {
-          this.rowData = args.rowData
-          return
-        }
-        var target = args.target
-        if (target.classList.contains('e-edit')) {
-          target = target.parentElement
-        }
-        let rowObj = this.$refs.gridObj.ej2Instances.getRowObjectFromUID(target.parentElement.parentElement.parentElement.getAttribute('data-uid'))
-        this.rowData = rowObj.data
-      },
-      onDlgClose () {
-        this.dlgShow = false
-      }
-  },
-  provide: {
-      grid: [Edit, Group, Filter, Page, Selection, CommandColumn, Toolbar]
-  },
-  components: {
-    IssueLicense
+function onGridLoad() {
+  if (Browser.isDevice) {
+    toolbar = [{ text: 'Edit', tooltipText: 'Edit', prefixIcon: 'e-edit', id: 'editTool' }, 'Delete'];
+    gridObj.value.ej2Instances.columns[7].visible = false;
   }
-})
+}
+function onActionBegin(args) {
+  if (args.requestType === 'beginEdit') {
+    editBtnClick(args);
+    args.cancel = true;
+  }
+}
+function dateRangeChanged(args) {
+  // check wheather the value is empty or not
+  if (args.startDate && args.endDate) {
+    var filter = [
+      { field: 'IssuedOn', operator: 'greaterthanorequal', predicate: 'and', value: args.startDate },
+      { field: 'IssuedOn', operator: 'lessthanorequal', predicate: 'and', value: args.endDate }
+    ];
+    gridObj.value.ej2Instance.filterSettings = { type: 'Menu', columns: filter };
+  } else {
+    gridObj.value.ej2Instance.filterSettings = { type: 'Menu', columns: [] };
+  }
+}
+function AddBtnClick() {
+  dlgShow.value = !dlgShow.value;
+  isEditing.value = false;
+}
+function editToolClicked(args) {
+  if (args.item.id === 'editTool') {
+    isEditing.value = true;
+    var rows = gridObj.value.ej2Instances.getSelectedRows()[0];
+    if (!rows) {
+      gridObj.value.ej2Instances.editModule.showDialog('EditOperationAlert', gridObj.value.ej2Instances.editModule.alertDObj);
+      return;
+    }
+    let rowObj = gridObj.value.ej2Instances.getRowObjectFromUID(rows.getAttribute('data-uid'));
+    rowData.value = rowObj.data;
+    dlgShow.value = !this.dlgShow;
+  }
+}
+function editBtnClick(args) {
+  isEditing.value = true;
+  dlgShow.value = !dlgShow.value;
+  if (args.type === 'actionBegin') {
+    rowData.value = args.rowData;
+    return;
+  }
+  var target = args.target;
+  if (target.classList.contains('e-edit')) {
+    target = target.parentElement;
+  }
+  let rowObj = gridObj.value.ej2Instances.getRowObjectFromUID(target.parentElement.parentElement.parentElement.getAttribute('data-uid'));
+  rowData.value = rowObj.data;
+}
+function onDlgClose () {
+  dlgShow.value = false;
+}
+provide('grid', [Edit, Group, Filter, Page, Selection, CommandColumn, Toolbar]);
+
 </script>
 
 <style scoped>

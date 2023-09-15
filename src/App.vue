@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-on:click="closeMenus" :style="{ marginLeft: marginSize }">
+  <div v-on:click="closeMenus" :style="{ marginLeft: marginSize }">
 <div class="control-section">
     <div id="wrapper">
         <title>IT Asset Management</title>
@@ -17,7 +17,7 @@
                 <!-- <span class="e-avatar e-avatar-circle"></span> -->
                 <div class="badge-block" v-on:click="toggleNotify()">
                 <div id="bell" class="sf-icon-Notification" :style="{ color: bellColor }"></div>
-                <span id="badge" class="e-badge e-badge-warning e-badge-notification e-badge-overlap">{{this.$store.state.activityData.length}} </span>
+                <span id="badge" class="e-badge e-badge-warning e-badge-notification e-badge-overlap">{{store.state.activityData.length}} </span>
                 </div>
             </div>
         </div>
@@ -480,13 +480,24 @@ line-height: 1;
   -moz-osx-font-smoothing: grayscale;
 }
 </style>
-<script>
-import Vue from 'vue'
-import { SidebarPlugin, AccordionPlugin } from '@syncfusion/ej2-vue-navigations'
-import { ListViewPlugin } from '@syncfusion/ej2-vue-lists'
-import { enableRipple, Browser, L10n } from '@syncfusion/ej2-base'
-import { ToastPlugin } from '@syncfusion/ej2-vue-notifications'
-import Notification from '@/components/NotificationTemplate'
+<script setup>
+
+import { SidebarComponent as EjsSidebar } from '@syncfusion/ej2-vue-navigations';
+import { ListViewComponent as EjsListview } from '@syncfusion/ej2-vue-lists';
+import { enableRipple, Browser, L10n } from '@syncfusion/ej2-base';
+import { ToastComponent as EjsToast } from '@syncfusion/ej2-vue-notifications';
+import Notification from '@/components/NotificationTemplate';
+import { createApp, ref } from "vue";
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
+const toastRef = ref(null);
+const sidebarListObj = ref(null);
+const notifybarObj = ref(null);
+const sidebarInstance = ref(null);
+const router = useRouter();
+const store = useStore();
+const app = createApp();
 
 // Added for command Column tooltip
 L10n.load({
@@ -495,14 +506,10 @@ L10n.load({
           'edit': 'Edit'
         }
     }
-})
+});
 
-Vue.use(ToastPlugin)
-Vue.use(AccordionPlugin)
-Vue.use(SidebarPlugin)
-Vue.use(ListViewPlugin)
-enableRipple(false)
-var templateVue = Vue.component('menuTemplate', {
+enableRipple(false);
+var templateVue = app.component('menuTemplate', {
   template: `
     <div class="listWrapper" style="width: inherit;height: inherit;">
         <span :class="[data.icon + ' list_svg']"></span>
@@ -513,113 +520,111 @@ var templateVue = Vue.component('menuTemplate', {
   data () {
     return {
       data: {}
-    }
+    };
   }
-})
-export default Vue.extend({
-    data: function () {
-        return {
-            accountList: [
-                { text: 'Profile', id: '001', icon: 'profile' },
-                { text: 'Logout', id: '002', icon: 'logout' }
-            ],
-            dataList: [
-                  { text: 'Dashboard', id: '01', messages: '', badge: '', icon: 'sf-icon-Dashboard' },
-                  { text: 'Hardware', id: '02', messages: '', badge: '', icon: 'sf-icon-Hardware' },
-                  { text: 'Software', id: '03', messages: '', badge: '', icon: 'sf-icon-Software' },
-                  { text: 'Issued Licenses', id: '04', messages: '', badge: '', icon: 'sf-icon-License' },
-                  { text: 'Requests', id: '05', messages: this.$store.getters.pendingRequests, badge: 'e-badge e-badge-warning', icon: 'sf-icon-Request' },
-                  { text: 'About', id: '06', messages: '', badge: '', icon: 'sf-icon-About' }
-            ],
-            fields: { iconCss: 'icon', tooltip: 'text' },
-            template: function () {
-            return { template: templateVue }
-            },
-            type: Browser.isDevice ? 'Over' : 'Push',
-            width: '170px',
-            name: 'App',
-            dockSize: '170px',
-            enableDock: !Browser.isDevice,
-            closeOnDocumentClick: true,
-            position: {
+});
+
+const accountList = [
+    { text: 'Profile', id: '001', icon: 'profile' },
+    { text: 'Logout', id: '002', icon: 'logout' }
+];
+
+const dataList = [
+    { text: 'Dashboard', id: '01', messages: '', badge: '', icon: 'sf-icon-Dashboard' },
+    { text: 'Hardware', id: '02', messages: '', badge: '', icon: 'sf-icon-Hardware' },
+    { text: 'Software', id: '03', messages: '', badge: '', icon: 'sf-icon-Software' },
+    { text: 'Issued Licenses', id: '04', messages: '', badge: '', icon: 'sf-icon-License' },
+    { text: 'Requests', id: '05', messages: store.getters.pendingRequests, badge: 'e-badge e-badge-warning', icon: 'sf-icon-Request' },
+    { text: 'About', id: '06', messages: '', badge: '', icon: 'sf-icon-About' }
+];
+const fields = { iconCss: 'icon', tooltip: 'text' };
+const template = function() {
+            return { template: templateVue };
+            };
+const type = Browser.isDevice ? 'Over' : 'Push';
+const width = '170px';
+const dockSize = '170px';
+const enableDock = !Browser.isDevice;
+const closeOnDocumentClick = true;
+const position = {
                 X: 'Right'
-            },
-            showNotifyDlg: false,
-            logoutPopup: false,
-            logoutPopupClicked: false,
-            notifyBellClicked: false,
-            sidebarClicked: false,
-            contextLeft: '1000px',
-            isDevice: Browser.isDevice,
-            showBackdrop: false,
-            sidebarTarget: Browser.isDevice ? '.content' : document.body,
-            sidebarPosition: Browser.isDevice ? 'absolute' : 'fixed',
-            marginSize: Browser.isDevice ? '0px' : '170px',
-            backColor: Browser.isDevice ? 'linear-gradient(-138deg, #3D8EC4 0%, #276AAB 100%)' : '#fff',
-            bellColor: Browser.isDevice ? '#fff' : '#999999'
+            };
+let logoutPopup = ref(false);
+let logoutPopupClicked = false;
+let notifyBellClicked = false;
+let sidebarClicked = false;
+const isDevice = Browser.isDevice;
+const showBackdrop = false;
+const sidebarTarget = Browser.isDevice ? '.content' : document.body;
+const sidebarPosition = Browser.isDevice ? 'absolute' : 'fixed';
+//const marginSize = Browser.isDevice ? '0px' : '170px';
+const marginSize = '0px';
+const backColor = Browser.isDevice ? 'linear-gradient(-138deg, #3D8EC4 0%, #276AAB 100%)' : '#fff';
+const bellColor = Browser.isDevice ? '#fff' : '#999999';
+
+function onComplete (args) {
+    var name = router.options.history.location.split('/');
+    name = name.length && name[1] ? name[1] : '';
+    var menuText;
+    for (let i = 0; i < args.data.length; i++) {
+        if (name === '') {
+            menuText = 'Dashboard';
+            break;
         }
-    },
-    methods: {
-        onComplete: function (args) {
-            var name = this.$router.currentRoute.name
-            var menuId
-            for (let i = 0; i < args.data.length; i++) {
-                if (args.data[i].text === name) {
-                menuId = args.data[i].id
-                }
-            }
-            this.$refs.sidebarListObj.selectItem({'id': menuId})
-        },
-        updatePendingRequests: function () {
-            for (let data of this.dataList) {
-                if (data['badge'] !== '') {
-                    data['messages'] = this.$store.getters.pendingRequests
-                }
-            }
-        },
-        // Listview select event handler
-        onSelect: function (args) {
-            var vuePath = '/'
-            if (args.text !== 'Dashboard') {
-                vuePath += args.text.replace(' ', '')
-            }
-            this.$router.push({ path: vuePath }).catch(()=>{})
-            this.$refs.notifybarObj.hide()
-        },
-        openClick: function () {
-            this.$refs.sidebarInstance.toggle()
-            this.sidebarClicked = true
-        },
-        closeClick: function () {
-            this.$refs.sidebarInstance.hide()
-        },
-        closeMenus: function () {
-            if (!this.logoutPopupClicked) {
-                this.logoutPopup = false
-            }
-            if (!this.notifyBellClicked) {
-                this.$refs.notifybarObj.hide()
-            }
-            if (this.isDevice) {
-                if (!this.sidebarClicked) {
-                    this.$refs.sidebarInstance.hide()
-                }
-            }
-            this.logoutPopupClicked = false
-            this.notifyBellClicked = false
-            this.sidebarClicked = false
-        },
-        AccountMenu: function () {
-            this.logoutPopup = !this.logoutPopup
-            this.logoutPopupClicked = true
-        },
-        toggleNotify: function () {
-            this.$refs.notifybarObj.toggle()
-            this.notifyBellClicked = true
+        if (args.data[i].text === name) {
+            menuText = args.data[i].text;
+            break;
         }
-    },
-    components: {
-        Notification
     }
-})
+    sidebarListObj.value.ej2Instance.selectItem({'text': menuText});
+}
+// eslint-disable-next-line no-unused-vars
+function updatePendingRequests() {
+    for (let data of dataList) {
+        if (data['badge'] !== '') {
+            data['messages'] = store.getters.pendingRequests;
+        }
+    }
+}
+// Listview select event handler
+function onSelect(args) {
+    var vuePath = '/';
+    if (args.text !== 'Dashboard') {
+        vuePath += args.text.replace(' ', '');
+    }
+    router.push({ path: vuePath }).catch(()=>{});
+    notifybarObj.value.hide();
+}
+function openClick() {
+    sidebarInstance.value.toggle();
+    sidebarClicked = true;
+}
+// eslint-disable-next-line
+function closeClick() {
+    sidebarInstance.value.hide();
+}
+function closeMenus() {
+    if (!logoutPopupClicked) {
+        logoutPopup.value = false;
+    }
+    if (!notifyBellClicked) {
+        notifybarObj.value.hide();
+    }
+    if (isDevice) {
+        if (!sidebarClicked) {
+            sidebarInstance.value.hide();
+        }
+    }
+    logoutPopupClicked = false;
+    notifyBellClicked = false;
+    sidebarClicked = false;
+}
+function AccountMenu() {
+    logoutPopup.value = !logoutPopup.value;
+    logoutPopupClicked = true;
+}
+function toggleNotify() {
+    notifybarObj.value.toggle();
+    notifyBellClicked = true;
+}
 </script>
