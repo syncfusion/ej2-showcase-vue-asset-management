@@ -60,7 +60,7 @@
         </div>
         <div class='control-item'>
             <span class="icon-listview e-sb-icon control-icon"></span>
-            <a class='control-name' href="http://ej2.syncfusion.com/vue/documentation/list-view/getting-started.html" target="_blank">ListView</a>
+            <a class='control-name' href="http://ej2.syncfusion.com/vue/documentation/listview/getting-started.html" target="_blank">ListView</a>
         </div>
         <div class='control-item'>
             <span class="icon-textboxes e-sb-icon control-icon"></span>
@@ -85,9 +85,7 @@
     </div>
 </div>
 </template>
-<script>
-export default {
-}
+<script setup>
 </script>
 
 <style scoped>

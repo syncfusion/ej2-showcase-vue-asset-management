@@ -65,7 +65,7 @@
 
       <div class="row pull-right">
         <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6">
-          <ejs-button id="primarybtn" :isPrimary="true" @click.native="addRecord">{{btnName}}</ejs-button>
+          <ejs-button id="primarybtn" :isPrimary="true" v-on:click="addRecord">{{btnName}}</ejs-button>
         </div>
       </div>
     </div>
@@ -73,198 +73,192 @@
   </form>
 </ejs-dialog>
 </template>
-<script>
-import Vue from 'vue'
-import { ButtonComponent, ButtonPlugin } from '@syncfusion/ej2-vue-buttons'
-import { DatePickerPlugin } from '@syncfusion/ej2-vue-calendars'
-import { DropDownListComponent } from '@syncfusion/ej2-vue-dropdowns'
-import { NumericTextBoxPlugin, FormValidator } from '@syncfusion/ej2-vue-inputs'
-import { DialogPlugin } from '@syncfusion/ej2-vue-popups'
-import { employeeData } from '../datasource.js'
-import { DataManager, Query, Predicate } from '@syncfusion/ej2-data'
+<script setup>
+import { onMounted, computed, getCurrentInstance, ref } from 'vue';
+import { ButtonComponent as EjsButton } from '@syncfusion/ej2-vue-buttons';
+import { DatePickerComponent as EjsDatepicker } from '@syncfusion/ej2-vue-calendars';
+import { DropDownListComponent as EjsDropdownlist } from '@syncfusion/ej2-vue-dropdowns';
+import { NumericTextBoxComponent as EjsNumerictextbox, FormValidator } from '@syncfusion/ej2-vue-inputs';
+import { DialogComponent as EjsDialog } from '@syncfusion/ej2-vue-popups';
+import { employeeData } from '../datasource.js';
+import { DataManager, Query, Predicate } from '@syncfusion/ej2-data';
+import { useStore } from 'vuex';
 
-Vue.use(DialogPlugin)
-Vue.component(DropDownListComponent)
-Vue.use(NumericTextBoxPlugin)
-Vue.use(DatePickerPlugin)
-Vue.component(ButtonPlugin.name, ButtonComponent)
-export default Vue.extend({
-  data: function () {
-    return {
-      categoryList: [
-        { id: 'cat-1', text: 'Development' },
-        { id: 'cat-2', text: 'Graphics' },
-        { id: 'cat-3', text: 'Accounting' },
-        { id: 'cat-4', text: 'HR' },
-        { id: 'cat-5', text: 'Common' },
-        { id: 'cat-6', text: 'Miscellaneous' }
-      ],
-      LicenseList: [
-        { id: 'Lic-1', text: 'Free' },
-        { id: 'Lic-2', text: 'Yearly (User basis)' },
-        { id: 'Lic-3', text: 'Lifetime' }
-      ],
-      header: 'Add New Software',
-      target: document.body,
-      showCloseIcon: true,
-      btnName: 'Submit',
-      width: '500px',
-      isModal: true,
-      options: {
-        // Initialize the CustomPlacement.
-        customPlacement: function (inputElement, errorElement) {
-          inputElement.parentNode.appendChild(errorElement)
-        },
-        rules: {
-          Name: { required: true },
-          DOP: { required: true, date: true }
-        }
-      },
-      frmObj: undefined,
-      maxDate: new Date(),
-      animationSettings: { effect: 'None' }
-    }
+const store = useStore();
+const root = getCurrentInstance();
+const dialogObj = ref(null);
+
+const categoryList = [
+  { id: 'cat-1', text: 'Development' },
+  { id: 'cat-2', text: 'Graphics' },
+  { id: 'cat-3', text: 'Accounting' },
+  { id: 'cat-4', text: 'HR' },
+  { id: 'cat-5', text: 'Common' },
+  { id: 'cat-6', text: 'Miscellaneous' }
+];
+const LicenseList = [
+  { id: 'Lic-1', text: 'Free' },
+  { id: 'Lic-2', text: 'Yearly (User basis)' },
+  { id: 'Lic-3', text: 'Lifetime' }
+];
+let header = 'Add New Software';
+const target = document.body;
+const showCloseIcon = true;
+let btnName = 'Submit';
+const width = '500px';
+const isModal = true;
+const options = {
+  // Initialize the CustomPlacement.
+  customPlacement: function (inputElement, errorElement) {
+    inputElement.parentNode.appendChild(errorElement)
   },
-  mounted: function () {
-    this.frmObj = new FormValidator('#formId', this.options)
-  },
-  methods: {
-    dialogClose: function () {
-      this.$emit('close')
-    },
-    dialogOpen: function () {
-      this.frmObj.reset()
-      if (!this.isEdit) {
-        this.header = 'Add New Software'
-        this.btnName = 'Submit'
-        document.getElementById('name').value = ''
-        document.getElementById('edition').value = ''
-        document.getElementById('version').value = ''
-        document.getElementById('vendor').value = ''
-        document.getElementById('license-type').value = 'Free'
-        document.getElementById('license-count').value = 0
-        document.getElementById('dop').value = new Date().toLocaleDateString()
-        document.getElementById('expired-on').value = ''
-        document.getElementById('category').value = 'Development'
-        document.getElementById('note').value = ''
-      } else {
-        this.header = 'Edit Software'
-        this.btnName = 'Save'
-        var row = this.rowData
-        document.getElementById('taskID').value = row['TaskID']
-        document.getElementById('name').value = row['Name']
-        document.getElementById('edition').value = row['Edition']
-        document.getElementById('version').value = row['Version']
-        document.getElementById('vendor').value = row['Vendor']
-        document.getElementById('license-type').value = row['LicenseType']
-        document.getElementById('license-count').value = row['LicenseCount']
-        document.getElementById('dop').value = row['DOP'].toLocaleDateString()
-        document.getElementById('expired-on').value = row['ExpiredOn'] !== '' ? row['ExpiredOn'].toLocaleDateString() : ''
-        document.getElementById('category').value = row['Category']
-        document.getElementById('note').value = row['Note']
-      }
-      this.$refs.dialogObj.show()
-    },
-    addRecord: function () {
-      var grid = document.querySelector('.e-grid')['ej2_instances'][0]
-      var userName = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', this.$store.state.currentUserID)))[0]['Employee']
-      var userImg = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', this.$store.state.currentUserID)))[0]['ImgSrc']
-      if (this.frmObj.validate()) {
-            var id = this.$store.state.activityData.length
-          if (!this.isEdit) {
-            grid.addRecord({
-            'TaskID': grid.dataSource.length + 1,
-            'Name': document.getElementById('name').value,
-            'Edition': document.getElementById('edition').value,
-            'Version': document.getElementById('version').value,
-            'Vendor': document.getElementById('vendor').value,
-            'LicenseType': document.getElementById('license-type').value,
-            'LicenseCount': document.getElementById('license-count').value,
-            'DOP': new Date(document.getElementById('dop').value),
-            'ExpiredOn': new Date(document.getElementById('expired-on').value),
-            'Category': document.getElementById('category').value,
-            'Note': document.getElementById('note').value
-            })
-            var activity = {
-              'id': id,
-              'Employee': userName,
-              'ImgSrc': userImg,
-              'TimeStamp': new Date().toLocaleDateString(),
-              'Message': 'A new software ' + document.getElementById('name').value + ' has been added'
-            }
-            this.$store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
-              this.$root.$children[0].$refs.toastRef.show({
-                title: 'Successs!',
-                content: 'Software added successfully',
-                cssClass: 'e-toast-success',
-                icon: 'e-success toast-icons'
-              })
-            }).catch((reason) => {
-              alert(reason)
-            })
-          } else {
-            var data = {'TaskID': +document.getElementById('taskID').value,
-            'Name': document.getElementById('name').value,
-            'Edition': document.getElementById('edition').value,
-            'Version': document.getElementById('version').value,
-            'Vendor': document.getElementById('vendor').value,
-            'LicenseType': document.getElementById('license-type').value,
-            'LicenseCount': document.getElementById('license-count').value,
-            'DOP': new Date(document.getElementById('dop').value),
-            'ExpiredOn': new Date(document.getElementById('expired-on').value),
-            'Category': document.getElementById('category').value,
-            'Note': document.getElementById('note').value
-              }
-           var index = grid.selectedRowIndex
-            grid.editModule.updateRow(index, data)
-            activity = {
-              'id': id,
-              'Employee': userName,
-              'ImgSrc': userImg,
-              'TimeStamp': new Date().toLocaleDateString(),
-              'Message': 'The Software ' + document.getElementById('name').value + ' has been updated'
-            }
-            this.$store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
-              this.$root.$children[0].$refs.toastRef.show({
-                title: 'Successs!',
-                content: 'Software updated successfully',
-                cssClass: 'e-toast-success',
-                icon: 'e-success toast-icons'
-              })
-            }).catch((reason) => {
-              alert(reason)
-            })
-          }
-        this.frmObj.reset()
-        this.$refs.dialogObj.hide()
-        this.$emit('close')
-      }
-    }
-  },
-  props: {
-    /** Whether the dialog is currently showing */
-    showing: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    isEdit: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    rowData: {
-      type: Object,
-      required: false,
-      default: null
-    }
-  },
-  computed: {
-    isShowing () {
-      return this.showing
-    }
+  rules: {
+    Name: { required: true },
+    DOP: { required: true, date: true }
   }
-})
+};
+let frmObj = undefined;
+const maxDate = new Date();
+const animationSettings = { effect: 'None' };
+onMounted(() => {
+  frmObj = new FormValidator('#formId', options);
+});
+function dialogClose() {
+  emit('close');
+}
+function dialogOpen () {
+  frmObj.reset();
+  if (!props.isEdit) {
+    header = 'Add New Software';
+    btnName = 'Submit';
+    document.getElementById('name').value = '';
+    document.getElementById('edition').value = '';
+    document.getElementById('version').value = '';
+    document.getElementById('vendor').value = '';
+    document.getElementById('license-type').value = 'Free';
+    document.getElementById('license-count').value = 0;
+    document.getElementById('dop').value = new Date().toLocaleDateString();
+    document.getElementById('expired-on').value = '';
+    document.getElementById('category').value = 'Development';
+    document.getElementById('note').value = '';
+  } else {
+    header = 'Edit Software';
+    btnName = 'Save';
+    var row = props.rowData;
+    document.getElementById('taskID').value = row['TaskID'];
+    document.getElementById('name').value = row['Name'];
+    document.getElementById('edition').value = row['Edition'];
+    document.getElementById('version').value = row['Version'];
+    document.getElementById('vendor').value = row['Vendor'];
+    document.getElementById('license-type').value = row['LicenseType'];
+    document.getElementById('license-count').value = row['LicenseCount'];
+    document.getElementById('dop').value = row['DOP'].toLocaleDateString();
+    document.getElementById('expired-on').value = row['ExpiredOn'] !== '' ? row['ExpiredOn'].toLocaleDateString() : '';
+    document.getElementById('category').value = row['Category'];
+    document.getElementById('note').value = row['Note'];
+  }
+  dialogObj.value.show();
+}
+function addRecord() {
+  var grid = document.querySelector('.e-grid')['ej2_instances'][0];
+  var userName = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', store.state.currentUserID)))[0]['Employee'];
+  var userImg = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', store.state.currentUserID)))[0]['ImgSrc'];
+  if (frmObj.validate()) {
+    var id = store.state.activityData.length;
+    if (!props.isEdit) {
+      grid.addRecord({
+        'TaskID': grid.dataSource.length + 1,
+        'Name': document.getElementById('name').value,
+        'Edition': document.getElementById('edition').value,
+        'Version': document.getElementById('version').value,
+        'Vendor': document.getElementById('vendor').value,
+        'LicenseType': document.getElementById('license-type').value,
+        'LicenseCount': document.getElementById('license-count').value,
+        'DOP': new Date(document.getElementById('dop').value),
+        'ExpiredOn': new Date(document.getElementById('expired-on').value),
+        'Category': document.getElementById('category').value,
+        'Note': document.getElementById('note').value
+      });
+      var activity = {
+        'id': id,
+        'Employee': userName,
+        'ImgSrc': userImg,
+        'TimeStamp': new Date().toLocaleDateString(),
+        'Message': 'A new software ' + document.getElementById('name').value + ' has been added'
+      };
+      store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
+        root.root.refs.toastRef.show({
+          title: 'Successs!',
+          content: 'Software added successfully',
+          cssClass: 'e-toast-success',
+          icon: 'e-success toast-icons'
+        });
+      }).catch((reason) => {
+        alert(reason);
+      });
+    } else {
+      var data = {
+        'TaskID': +document.getElementById('taskID').value,
+        'Name': document.getElementById('name').value,
+        'Edition': document.getElementById('edition').value,
+        'Version': document.getElementById('version').value,
+        'Vendor': document.getElementById('vendor').value,
+        'LicenseType': document.getElementById('license-type').value,
+        'LicenseCount': document.getElementById('license-count').value,
+        'DOP': new Date(document.getElementById('dop').value),
+        'ExpiredOn': new Date(document.getElementById('expired-on').value),
+        'Category': document.getElementById('category').value,
+        'Note': document.getElementById('note').value
+      };
+      var index = grid.selectedRowIndex;
+      grid.editModule.updateRow(index, data);
+      activity = {
+        'id': id,
+        'Employee': userName,
+        'ImgSrc': userImg,
+        'TimeStamp': new Date().toLocaleDateString(),
+        'Message': 'The Software ' + document.getElementById('name').value + ' has been updated'
+      };
+      store.dispatch('addActivity', Object.assign({}, activity)).then(() => {
+        root.root.refs.toastRef.show({
+          title: 'Successs!',
+          content: 'Software updated successfully',
+          cssClass: 'e-toast-success',
+          icon: 'e-success toast-icons'
+        });
+      }).catch((reason) => {
+        alert(reason);
+      });
+    }
+    frmObj.reset();
+    dialogObj.value.hide();
+    emit('close');
+  }
+}
+// eslint-disable-next-line no-undef
+const emit = defineEmits(['close']);
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  /** Whether the dialog is currently showing */
+  showing: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  isEdit: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  rowData: {
+    type: Object,
+    required: false,
+    default: null
+  }
+});
+const isShowing = computed(() => {
+  return props.showing
+});
 </script>
 
 <style scoped>

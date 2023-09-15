@@ -3,43 +3,45 @@
         <ejs-listview id='listview_notification' :fields='fields' ref='list_notification' :dataSource='data' :showHeader='header' :headerTitle='listTitle' :template='ltemplate' :select='onComplete'></ejs-listview>
   </ejs-sidebar>
 </template>
-<script>
-import Vue from 'vue'
-import { ListViewPlugin } from '@syncfusion/ej2-vue-lists'
-import ActivityTemplate from './ActivityTemplate.vue'
+<script setup>
+import { ListViewComponent as EjsListview } from '@syncfusion/ej2-vue-lists';
+import { SidebarComponent as EjsSidebar } from '@syncfusion/ej2-vue-navigations';
+import ActivityTemplate from './ActivityTemplate.vue';
+import { createApp, ref } from "vue";
+import { useStore } from 'vuex';
 
-Vue.use(ListViewPlugin)
-export default Vue.extend({
-  data: function () {
-    return {
-    header: true,
-    data: this.$store.state.activityData,
-    // eslint-disable-next-line
-    ltemplate: function () {
-          return {template: ActivityTemplate}
-      },
-    fields: { 'id': 'Employee' },
-    listTitle: 'Notifications',
-    type: 'Over',
-    width: '300px',
-    enableDock: false,
-    closeOnDocumentClick: true,
-    showBackdrop: false,
-    sidebarTarget: navigator.userAgent.indexOf('Firefox') !== -1 ? 'body' : '.content',
-    position: 'Right'
-   }
-  },
-  methods: {
-    toggle: function () {
-      this.$refs.list_notification.ej2Instances.reRender()
-      this.$refs.notifybarInstance.toggle()
-    },
-    hide: function () {
-      this.$refs.notifybarInstance.hide()
-    },
-    onComplete: function () {
-    }
-  }
+const store = useStore();
+const list_notification = ref(null);
+const notifybarInstance = ref(null);
+const app = createApp();
+
+const header = true;
+const data = store.state.activityData;
+const ltemplate = function () {
+  return {template: app.component("notificationListTemplate", ActivityTemplate)};
+};
+const fields = { 'id': 'Employee' };
+const listTitle = 'Notifications';
+const type = 'Over';
+const width = '300px';
+const enableDock = false;
+const showBackdrop = false;
+const sidebarTarget = navigator.userAgent.indexOf('Firefox') !== -1 ? 'body' : '.content';
+const position = 'Right';
+function toggle() {
+  list_notification.value.ej2Instances.reRender()
+  notifybarInstance.value.toggle()
+}
+// eslint-disable-next-line
+function hide() {
+  notifybarInstance.value.hide()
+}
+function onComplete() {
+}
+// eslint-disable-next-line no-undef
+defineExpose({
+  hide,
+  toggle
 })
 </script>
 
