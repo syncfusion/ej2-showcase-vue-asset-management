@@ -83,13 +83,14 @@ import SoftwareLicenseChart from '@/components/dashboard/SoftwareLicenseChart';
 import HardwareStatusChart from '@/components/dashboard/HardwareStatusChart';
 import HardwareCategoryChart from '@/components/dashboard/HardwareCategoryChart';
 import SoftwareCategoryChart from '@/components/dashboard/SoftwareCategoryChart';
-import { createApp } from "vue";
+import { createApp, getCurrentInstance } from "vue";
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const router = useRouter();
 const store = useStore();
 const app = createApp();
+const root = getCurrentInstance();
 
 const header = true;
 const data = store.state.activityData;
@@ -101,11 +102,11 @@ const fields = { 'id': 'Employee' };
 
 function requestClick() {
     router.push({ path: '/Requests' });
-    // this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '05'});
+    root.root.refs.sidebarListObj.selectItem({id: '05'});
 }
 function licenseClick() {
     router.push({ path: '/IssuedLicenses' });
-    // this.$root.$children[0].$refs.sidebarListObj.selectItem({id: '04'});
+    root.root.refs.sidebarListObj.selectItem({id: '04'});
 }
 
 </script>

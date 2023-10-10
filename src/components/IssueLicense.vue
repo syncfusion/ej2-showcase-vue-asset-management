@@ -90,7 +90,7 @@ const options = {
   }
 };
 let frmObj = undefined;
-const value = null;
+let value = null;
 const animationSettings = { effect: 'None' };
 
 // eslint-disable-next-line no-undef
