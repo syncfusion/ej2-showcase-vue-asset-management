@@ -95,7 +95,7 @@ function editToolClicked(args) {
     }
     let rowObj = gridObj.value.ej2Instances.getRowObjectFromUID(rows.getAttribute('data-uid'));
     rowData.value = rowObj.data;
-    dlgShow.value = !this.dlgShow;
+    dlgShow.value = !dlgShow.value;
   }
 }
 function editBtnClick(args) {

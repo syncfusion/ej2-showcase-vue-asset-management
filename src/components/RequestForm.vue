@@ -35,7 +35,7 @@
       <div v-show="!isHardware">
         <div class="col-xs-12 col-sm-12 col-lg-6 col-md-12">
           <label class="e-text">Software</label>
-          <ejs-dropdownlist id="Software" name="Software" :dataSource ="$store.getters.softwareNames" :fields='softwareFields'></ejs-dropdownlist>
+          <ejs-dropdownlist id="Software" name="Software" :dataSource ="store.getters.softwareNames" :fields='softwareFields'></ejs-dropdownlist>
         </div>
       </div>
       </div>

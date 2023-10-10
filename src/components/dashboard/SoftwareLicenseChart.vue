@@ -4,7 +4,7 @@
     <ejs-accumulationchart  ref='software-pie' :theme='theme' style='display:block' align='center' id='chart003'
         :legendSettings='legendSettings' :tooltip='tooltip' enableSmartLables='true'>
         <e-accumulation-series-collection>
-            <e-accumulation-series :dataSource='this.$store.getters.softwareLicense' :query='queries' xName='key' yName='count' :dataLabel='dataLabel' :startAngle='startAngle' :endAngle='endAngle' :explodeOffset='explodeOffset' :explodeIndex='explodeIndex' :radius='radius' name='Software License' innerRadius='0%'  explode='true' width=2 :palettes="colors"> </e-accumulation-series>
+            <e-accumulation-series :dataSource='store.getters.softwareLicense' :query='queries' xName='key' yName='count' :dataLabel='dataLabel' :startAngle='startAngle' :endAngle='endAngle' :explodeOffset='explodeOffset' :explodeIndex='explodeIndex' :radius='radius' name='Software License' innerRadius='0%'  explode='true' width=2 :palettes="colors"> </e-accumulation-series>
         </e-accumulation-series-collection>
     </ejs-accumulationchart>
 </div>

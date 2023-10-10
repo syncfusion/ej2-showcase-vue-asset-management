@@ -35,7 +35,7 @@
   </div>
 </template>
 <script setup>
-import { ref, provide, getCurrentInstance } from 'vue';
+import { ref, provide, getCurrentInstance, inject } from 'vue';
 import { GridComponent as EjsGrid, ColumnsDirective as EColumns, ColumnDirective as EColumn,
   Edit, Filter, Group, Page, Selection, CommandColumn, Toolbar } from '@syncfusion/ej2-vue-grids';
 import { ButtonComponent as EjsButton } from '@syncfusion/ej2-vue-buttons';
@@ -46,6 +46,7 @@ import { DataManager, Query, Predicate } from '@syncfusion/ej2-data';
 import { Browser } from '@syncfusion/ej2-base';
 import { useStore } from 'vuex';
 
+const updatePendingRequests = inject('updatePendingRequests');
 const store = useStore();
 const root = getCurrentInstance();
 const gridObj = ref(null);
@@ -172,7 +173,7 @@ function approveClick(args) {
   }).catch((reason) => {
     alert(reason);
   });
-  root.root.devtoolsRawSetupState.updatePendingRequests();
+  updatePendingRequests();
 }
 function rejectClick(args) {
   var userName = new DataManager(employeeData).executeLocal(new Query().where(new Predicate('id', 'equal', store.state.currentUserID)))[0]['Employee'];
@@ -203,7 +204,7 @@ function rejectClick(args) {
   }).catch((reason) => {
     alert(reason);
   });
-  root.root.devtoolsRawSetupState.updatePendingRequests();
+  updatePendingRequests();
 }
 provide('grid', [Edit, Group, Filter, Page, Selection, CommandColumn, Toolbar]);
 
