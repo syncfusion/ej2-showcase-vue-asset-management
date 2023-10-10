@@ -38,7 +38,13 @@
 <p id="list-message">{{data.Message}}</p>
 </div>
 </template>
-<script setup>
-const data = {};
-const bgSize = 'cover';
+<script>
+export default {
+    data () {
+        return {
+            data: {},
+            bgSize: 'cover'
+        }
+    }
+}
 </script>

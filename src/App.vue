@@ -486,8 +486,8 @@ import { SidebarComponent as EjsSidebar } from '@syncfusion/ej2-vue-navigations'
 import { ListViewComponent as EjsListview } from '@syncfusion/ej2-vue-lists';
 import { enableRipple, Browser, L10n } from '@syncfusion/ej2-base';
 import { ToastComponent as EjsToast } from '@syncfusion/ej2-vue-notifications';
-import Notification from '@/components/NotificationTemplate';
-import { createApp, ref } from "vue";
+import Notification from './components/NotificationTemplate';
+import { createApp, ref, provide } from "vue";
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -627,4 +627,6 @@ function toggleNotify() {
     notifybarObj.value.toggle();
     notifyBellClicked = true;
 }
+
+provide('updatePendingRequests', updatePendingRequests);
 </script>
