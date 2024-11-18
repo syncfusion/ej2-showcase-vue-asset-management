@@ -576,7 +576,7 @@ function onComplete (args) {
             break;
         }
     }
-    sidebarListObj.value.ej2Instance.selectItem({'text': menuText});
+    sidebarListObj.value.selectItem({'text': menuText});
 }
 // eslint-disable-next-line no-unused-vars
 function updatePendingRequests() {
