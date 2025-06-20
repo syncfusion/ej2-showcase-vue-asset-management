@@ -31,7 +31,7 @@
             <!-- normal state element declaration -->
             <!-- <div id="close" class="e-icons" v-on:click="closeClick"></div>  -->
             <div class="app-title" v-show="!isDevice">
-                <div class="title-logo"></div>
+                <h1 class="title-logo"></h1>
             </div>
             <div class="content-area">
               <ejs-listview ref="sidebarListObj" id="menulist" :dataSource='dataList' :template="template" :closeOnDocumentClick='closeOnDocumentClick' :fields='fields' :select="onSelect" showIcon='true' :actionComplete="onComplete"></ejs-listview>
